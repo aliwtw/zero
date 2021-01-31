@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<!-- Conway's game of life (v 1.0) by Ali Husnain (6747279) -->
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>DPIT128/UCIT128: Assignment 4</title>
+    <style>
+
+      /* BEGIN: Template CSS (DO NOT ALTER/REMOVE) ----------- */
+
+      body {
+        background-color:#ffffff;
+        text-align:center;
+      }
+
+      /* END: Template CSS (DO NOT ALTER/REMOVE) ------------- */
+
+      /* INSERT INTERNAL CSS HERE */
+	  
+	  table{
+		border-collapse: collapse;
+		margin:auto;
+	  }
+	  
+	  td {
+		border:1px solid;
+	    width: 15px;
+      height: 15px;
+	  }
+    
+    .on {
+      background-color:black;
+    }
+    
+    #size{
+      width: 60px;
+      height: 60px;
+      color: white;
+      font-size: 40px;
+      background-color: #068f6d;
+      border-radius: 4px;
+    }
+    
+     #total {
+      width: 90px;
+      height: 30px;
+      color: white;
+      font-size: 20px;
+      background-color: #068f6d;
+      border-radius: 4px;
+      display:none;
+    }
+    
+    button {
+      background-color: #068f6d;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+      border:none;
+      width: 40px;
+      height: 40px
+    }
+    
+    #start, #reset {
+      display:none;
+    }
+    
+    label {
+      font-family: Verdana;
+      animation-name: color;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      font-size:25px;
+    }
+    
+    @keyframes color {
+      0% {color: #07ab46;}
+      50% {color: #0790ab;}
+      90% {color: #c40850;}
+      100% {color: #07ab46;}
+    }
+
+    </style>
+    <script>
+    
+      // INSERT INTERNAL JAVASCRIPT HERE
+      var grid;
+      var grid0;
+      
+      var repeat = false;
+      var  totalLives = 1;
+      
+      function start()
+      {
+        
+        document.getElementById("start").style.display = "none";
+        document.getElementById("reset").style.display = "inline-block";
+        document.getElementById("total").style.display = "block";
+        repeat = true;
+        
+        cellCheck();
+      
+      }
+      
+      function reset()
+      {
+        /*
+        document.getElementById("reset").style.display = "none";
+        document.getElementById("set").style.display = "inline-block";
+        repeat = false;
+        totalLives = 1;
+        document.getElementById("total").innerHTML= "";
+        document.getElementById("test").innerHTML= "";
+        document.getElementById("board").innerHTML= "";
+        setGrid();
+        */
+        repeat = false;
+        location.reload();
+        
+      
+      }
+	  
+      function setGrid(){
+      
+        var cells=document.getElementById("size").value;
+        
+        if(cells < 1 || isNaN(cells))
+        {
+          alert("InValid input, please enter a grater than 0 number");
+        }
+        else
+        {
+	    
+        grid = new Array(cells);
+        grid0 = new Array(cells);
+		
+        for (var i=0; i<cells; i++)  //could have used .length but since cells is same so no need for that
+        {
+          grid[i]= new Array(cells);
+          grid0[i]= new Array(cells);
+        }
+		
+		
+        for (var r=0; r<cells; r++)
+        {
+          for (var c=0; c<cells; c++)
+          {
+            grid[r][c]=0; //all cells having value of zero to represent ad dead initially
+            grid0[r][c]=0;
+          }
+        }
+        
+        setTable(cells);
+        
+        }
+      }
+      
+      function changeGridValues(cells){
+	    
+        for (var r=0; r<cells; r++)
+        {
+          for (var c=0; c<cells; c++)
+          {
+            grid[r][c]=grid0[r][c]; //setting all to 0 for next time.
+            grid0[r][c]=0; //setting all to 0 for next time.
+          }
+        }
+		
+      }
+      
+      //function setGrid0(cells){
+	    
+        //for (var r=0; r<cells; r++)
+        //{
+          //for (var c=0; c<cells; c++)
+          //{
+            //grid0[r][c]=0; //setting all to 0 for next time.
+          //}
+        //}
+		
+      //}
+      
+      function setTable(cells)
+      {
+      
+        var table ="";
+      
+        for (var r=0; r<cells; r++){
+        
+          table += "<tr>";
+        
+          for (var c=0; c<cells; c++){
+            
+            table += "<td id='"+r+","+c+"'class='off' onclick='changeValue("+r+","+c+")'></td>";
+          
+          }
+          
+          table += "</tr>";
+          
+        }
+        
+        
+        document.getElementById("board").innerHTML=table;
+        
+        document.getElementById("set").style.display = "none";
+        document.getElementById("start").style.display = "inline-block";
+        
+        document.getElementById("text").style.display = "none";
+        
+        alert("You can click a block to turn it on, click it again to turn it off");
+      
+      }
+      
+      function changeValue(r,c)
+      {
+        
+        if(document.getElementById(r+","+c).className=="off")
+        {
+          document.getElementById(r+","+c).className="on";
+          grid[r][c]=1;
+        }
+        else
+        {
+          document.getElementById(r+","+c).className="off";
+          grid[r][c]=0;
+        }
+        
+        // test for the elements of 2D array.  
+        
+        document.getElementById("test").style.display = "table";
+        
+        document.getElementById("test").innerHTML="Grid Values Tester <br>";
+        for (var i = 0; i < grid[0].length; i++) { 
+          for (var j = 0; j < grid[0].length; j++)    { 
+            document.getElementById("test").innerHTML+=grid[i][j] + " "; 
+          } 
+          document.getElementById("test").innerHTML+="<br>"; 
+        }
+      }
+      
+      function cellCheck()
+      {
+        for (var r = 0; r < grid[0].length; r++) { 
+          for (var c = 0; c < grid[0].length; c++){ 
+           life(r,c); 
+          }  
+        }
+        
+        //grid = grid0; //i was having same issue as in dpit 121 of shallow copy
+        changeGridValues(grid[0].length);
+        changeLife();
+        //setGrid0(grid[0].length);
+
+        
+        if(repeat==true)
+        {
+        
+          //cellCheck();  //Uncaught RangeError: Maximum call stack size exceeded maybe due to recursion
+          setInterval(cellCheck, 500); //so added delay 0.5 sec
+          
+          document.getElementById("total").innerHTML= totalLives;
+          totalLives += 1;
+        }
+      }
+      
+      function life(r,c)
+      {
+        var neighbour = 0;
+        
+        for (var i = (r-1); i<= (r+1);i++)
+        {
+          for (var j = (c-1); j<= (c+1);j++)
+          {
+            if(i==r && j==c)
+            {}
+            else if (i< 0 || j<0 || i>(grid[0].length-1) || j>(grid[0].length-1)) //end of canvas so no neighbour,
+            {}
+            else
+            {
+            
+              if(grid[i][j]==1)
+              {
+                neighbour+=1;
+              }
+            
+            }
+          }
+        
+        }
+        
+        if(document.getElementById(r+","+c).className=="on")
+        {
+          if(neighbour==2 || neighbour==3)
+          {
+            grid0[r][c]=1;
+          }
+          else
+          {
+            grid0[r][c]=0;
+          }
+        }
+        else
+        {
+          if(neighbour==3)
+          {
+            grid0[r][c]=1;
+          }
+        }
+        
+        
+      }
+      
+      function changeLife ()
+      {
+        for (var r = 0; r < grid[0].length; r++) { 
+          for (var c = 0; c < grid[0].length; c++){ 
+            
+            
+            if(grid[r][c]==1)
+            {
+              document.getElementById(r+","+c).className="on";
+            }
+            else if(grid[r][c]==0)
+            document.getElementById(r+","+c).className="off";
+          }  
+        }
+        
+        // test for the elements of 2D array.  
+        document.getElementById("test").innerHTML="Grid Values Tester <br>";
+        for (var i = 0; i < grid[0].length; i++) { 
+          for (var j = 0; j < grid[0].length; j++)    { 
+            document.getElementById("test").innerHTML+=grid[i][j] + " "; 
+          } 
+          document.getElementById("test").innerHTML+="<br>"; 
+        }
+      }
+      
+      //////////////////////////////////////////////
+
+    </script>
+  </head>
+  <body>
+    <h2>Game of Life</h2>
+    <hr />
+    
+
+    <!-- BEGIN: Challenge -->
+
+    <p id="total"></p>
+    <table id="board">
+    </table>
+    <br><br>
+    
+    <label id="text" for="size">Enter an Integer</label>
+    <br><br>
+    <input type="text" id="size">
+    <br><br>
+  
+    <button id="set" onclick="setGrid()">Set</button>
+    <button id="start" onclick="start()">Start</button>
+    <button id="reset" onclick="reset()">reset</button>
+    
+
+    <p style="font-size: 9px; background-color:black; color:white;display: none;" id="test"></p>
+    <!-- Challenge: Completed -->
+
+    <p>&copy; Ali Husnain</p>
+  </body>
+</html>
