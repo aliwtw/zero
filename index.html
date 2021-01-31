@@ -206,7 +206,7 @@
         
         document.getElementById("set").style.display = "none";
         document.getElementById("start").style.display = "inline-block";
-	document.getElementById("size").style.display = "none";
+        document.getElementById("size").style.display = "none";
         
         document.getElementById("text").style.display = "none";
         
@@ -249,27 +249,27 @@
           }  
         }
         
-	if(movementCheck())
-        {
-          alert("no change is happening now, life is dead!  see your life score and reset");
-        }
+        if(movementCheck())
+          {
+            alert("no change is happening now, life is dead!  see your life score and reset");
+          }
         else{
-        //grid = grid0; //i was having same issue as in dpit 121 of shallow copy
-        changeGridValues(grid[0].length);
-        changeLife();
-        //setGrid0(grid[0].length);
+          //grid = grid0; //i was having same issue as in dpit 121 of shallow copy
+          changeGridValues(grid[0].length);
+          changeLife();
+          //setGrid0(grid[0].length);
 
         
-        if(repeat==true)
-        {
+          if(repeat==true)
+          {
         
-          //cellCheck();  //Uncaught RangeError: Maximum call stack size exceeded maybe due to recursion
-          setInterval(cellCheck, 500); //so added delay 0.5 sec
+            //cellCheck();  //Uncaught RangeError: Maximum call stack size exceeded maybe due to recursion
+            setInterval(cellCheck, 500); //so added delay 0.5 sec
           
-          document.getElementById("total").innerHTML= totalLives;
-          totalLives += 1;
+            document.getElementById("total").innerHTML= totalLives;
+            totalLives += 1;
+          }
         }
-	}
       }
       
       function life(r,c)
@@ -319,8 +319,8 @@
         
       }
 	
-       function movementCheck()
-        {
+      function movementCheck()
+      {
         for(var r=0; r<grid[0].length;r++){
           for(var c=0; c<grid[0].length;c++){
           
