@@ -249,6 +249,11 @@
           }  
         }
         
+	if(movementCheck())
+        {
+          alert("no change is happening now, life is dead!  see your life score and reset");
+        }
+        else{
         //grid = grid0; //i was having same issue as in dpit 121 of shallow copy
         changeGridValues(grid[0].length);
         changeLife();
@@ -264,6 +269,7 @@
           document.getElementById("total").innerHTML= totalLives;
           totalLives += 1;
         }
+	}
       }
       
       function life(r,c)
@@ -311,6 +317,18 @@
         }
         
         
+      }
+	
+       function movementCheck()
+        {
+        for(var r=0; r<grid[0].length;r++){
+          for(var c=0; c<grid[0].length;c++){
+          
+            if (grid[r][c]!=grid0[r][c]){return false;}
+          }
+        }
+      
+        return true;
       }
       
       function changeLife ()
