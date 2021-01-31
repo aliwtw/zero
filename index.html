@@ -264,7 +264,7 @@
           {
         
             //cellCheck();  //Uncaught RangeError: Maximum call stack size exceeded maybe due to recursion
-            setInterval(cellCheck, 500); //so added delay 0.5 sec
+            setTimeout(cellCheck, 150); //so added delay 0.15 sec to see the magic before good processors finishes it XD
           
             document.getElementById("total").innerHTML= totalLives;
             totalLives += 1;
